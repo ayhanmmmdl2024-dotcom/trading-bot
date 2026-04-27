@@ -479,12 +479,15 @@ def xeberleri_yoxla():
 # SESSİYA (Baku vaxtı ilə düzəldilmiş)
 # ============================================================
 def aktiv_sessiyami():
-    """Baku vaxtı ilə aktiv sessiya (09:00 - 23:00)"""
-    utc_hour = datetime.now(timezone.utc).hour
-    baku_hour = (utc_hour + 4) % 24      # Baku = UTC+4
-    
-    return 9 <= baku_hour <= 23
-
+    """Baku vaxtı ilə aktiv sessiya - 09:00 - 23:00"""
+    try:
+        utc_now = datetime.now(timezone.utc)
+        baku_now = utc_now + timedelta(hours=4)
+        hour = baku_now.hour
+        print(f"🕒 Baku vaxtı: {baku_now.strftime('%H:%M:%S')} | Aktiv: {9 <= hour <= 23}")
+        return 9 <= hour <= 23
+    except:
+        return True  # əgər xəta olsa aktiv olsun
 # ============================================================
 # YFINANCE
 # ============================================================
