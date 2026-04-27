@@ -475,9 +475,16 @@ def xeberleri_yoxla():
 # ============================================================
 # SESSİYA
 # ============================================================
+# ============================================================
+# SESSİYA (Baku vaxtı ilə düzəldilmiş)
+# ============================================================
 def aktiv_sessiyami():
-    h = datetime.now(timezone.utc).hour
-    return (8 <= h < 17) or (13 <= h < 22)
+    """Baku vaxtı ilə ən aktiv saatlar (09:00 - 23:00)"""
+    utc_hour = datetime.now(timezone.utc).hour
+    baku_hour = (utc_hour + 4) % 24
+    
+    # Baku vaxtı ilə 09:00 - 23:00 arası aktiv olsun
+    return 9 <= baku_hour <= 23
 
 # ============================================================
 # YFINANCE
