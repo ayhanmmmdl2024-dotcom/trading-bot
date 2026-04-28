@@ -21,7 +21,7 @@ BINANCE_API_KEY  = ""   # Auto trade üçün — boş qalsa manual rejim
 BINANCE_SECRET   = ""   # Auto trade üçün — boş qalsa manual rejim
 
 BOT_AKTIV        = True
-MIN_ULDUZ        = 3
+MIN_ULDUZ        = 2.5
 AUTO_TRADE       = False
 MAX_GUNLUK_ZERER = 3.0
 RR_MINIMUM       = 2.0
@@ -47,11 +47,11 @@ update_id_kl    = threading.Lock()
 # AKTİV SPESİFİK PARAMETRLƏR
 # ============================================================
 ASSET_PARAMS = {
-    "CRYPTO":    {"rsi_long": 40, "rsi_short": 60, "atr_sl": 3.2, "atr_tp": 2.0, "vol_mult": 1.45, "sweep_period": 18, "strategy": "reversal"},
-    "FOREX":     {"rsi_long": 38, "rsi_short": 62, "atr_sl": 2.4, "atr_tp": 2.0, "vol_mult": 1.35, "sweep_period": 20, "strategy": "balanced"},
-    "COMMODITY": {"rsi_long": 40, "rsi_short": 60, "atr_sl": 2.7, "atr_tp": 2.0, "vol_mult": 1.45, "sweep_period": 20, "strategy": "balanced"},
-    "INDEX":     {"rsi_long": 35, "rsi_short": 65, "atr_sl": 2.1, "atr_tp": 2.0, "vol_mult": 1.65, "sweep_period": 25, "strategy": "trend"},
-    "STOCK":     {"rsi_long": 36, "rsi_short": 64, "atr_sl": 2.2, "atr_tp": 2.0, "vol_mult": 1.55, "sweep_period": 22, "strategy": "trend"},
+    "CRYPTO":    {"rsi_long": 40, "rsi_short": 60, "atr_sl": 3.2, "atr_tp": 2.0, "vol_mult": 1.35, "sweep_period": 18, "strategy": "reversal"},
+    "FOREX":     {"rsi_long": 38, "rsi_short": 62, "atr_sl": 2.4, "atr_tp": 2.0, "vol_mult": 1.30, "sweep_period": 20, "strategy": "balanced"},
+    "COMMODITY": {"rsi_long": 40, "rsi_short": 60, "atr_sl": 2.7, "atr_tp": 2.0, "vol_mult": 1.35, "sweep_period": 20, "strategy": "balanced"},
+    "INDEX":     {"rsi_long": 35, "rsi_short": 65, "atr_sl": 2.1, "atr_tp": 2.0, "vol_mult": 1.55, "sweep_period": 25, "strategy": "trend"},
+    "STOCK":     {"rsi_long": 36, "rsi_short": 64, "atr_sl": 2.2, "atr_tp": 2.0, "vol_mult": 1.45, "sweep_period": 22, "strategy": "trend"},
 }
 
 # ============================================================
@@ -730,12 +730,15 @@ def analiz_et(df, symbol=None, asset=None, asset_type="CRYPTO"):
                                 'rr': round(rr,2)
                             }
 
-        # ── TREND PULLBACK ──
-        if result is None and params["strategy"] in ("trend","balanced") and rejim == 'TRENDING':
-            ema50_dist = abs(price - ema50) / atr if atr > 0 else 10
+      # ── TREND PULLBACK ──
+        if result is None and params["strategy"] in ("trend", "balanced"):
+            # Bu sətri əlavə et və ya dəyişdir:
+            if rejim in ('TRENDING', 'RANGING'):   # Ranging-də də icazə ver
+                ema50_dist = abs(price - ema50) / atr if atr > 0 else 10
 
-            if (trend_4h == 'LONG' and price > ema50 and ema50 > ema200
-                    and ema50_dist < 1.8 and rsi < 65 and guclu_hecm):
+                if (trend_4h == 'LONG' and price > ema50 and ema50 > ema200
+                        and ema50_dist < 1.8 and rsi < 68 and guclu_hecm):
+                    # ... (qalan kod eyni qalsın)
                 sl = ema50 - atr * 2.0
                 tp = price + (price - sl) * RR_MINIMUM
                 if (price - sl) > 0:
