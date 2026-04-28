@@ -233,14 +233,15 @@ def telegram_komandlari_yoxla():
             elif text == '/resume':
                 BOT_AKTIV = True
                 telegram_mesaj_gonder("▶️ <b>Bot yenidən başladı.</b>")
-            elif text == '/status':
-                h       = datetime.now(timezone.utc).hour
-                sessiya = "🟢 Aktiv" if (8 <= h < 17 or 13 <= h < 22) else "🌙 Sakit"
+                       elif text == '/status':
+                baku_time = datetime.now(timezone.utc) + timedelta(hours=4)
+                sessiya = "🟢 AKTİV" if aktiv_sessiyami() else "🌙 Sakit"
                 telegram_mesaj_gonder(
-                    f"📊 <b>BOT STATUS</b>\n"
-                    f"Vəziyyət: {'🟢 Aktiv' if BOT_AKTIV else '🔴 Dayandırılıb'}\n"
+                    f"📊 <b>BOT STATUS</b>\n\n"
+                    f"Durum: {'🟢 AKTİV' if BOT_AKTIV else '🔴 DAYANDIRILIB'}\n"
                     f"Sessiya: {sessiya}\n"
-                    f"Vaxt: {datetime.now().strftime('%H:%M:%S')}"
+                    f"Baku Vaxtı: {baku_time.strftime('%H:%M:%S')}\n"
+                    f"Min Ulduz: {MIN_ULDUZ} | RR: 1:{RR_MINIMUM}"
                 )
             elif text == '/stats':
                 stats_gonder()
@@ -479,11 +480,8 @@ def xeberleri_yoxla():
 # SESSİYA (Baku vaxtı ilə düzəldilmiş)
 # ============================================================
 def aktiv_sessiyami():
-    """24/7 AKTİV REJİM - Test üçün"""
-    utc_now = datetime.now(timezone.utc)
-    baku_now = utc_now + timedelta(hours=4)
-    print(f"🕒 DEBUG - Baku vaxtı: {baku_now.strftime('%H:%M:%S')} | Sessiya: AKTİV")
-    return True   # Həmişə aktiv
+    """24/7 AKTİV - Filter söndürüldü"""
+    return True
 # ============================================================
 # YFINANCE
 # ============================================================
@@ -978,14 +976,21 @@ print("Əlavələr  : OB | FVG | Scoring | Sentiment | Fear&Greed | Telegram | H
 print("Düzəlişlər: ✅ Breakout bug | ✅ gunluk_zerer | ✅ update_id | ✅ Performans | ✅ MPC | ✅ RR")
 print("=" * 80)
 
-telegram_mesaj_gonder(
-    "🚀 <b>UNIVERSAL SNIPER v7.2 işə düşdü!</b>\n\n"
-    "✅ Bütün bug-lar düzəldildi\n"
-    "📊 450+ aktiv | 3 strategiya\n"
-    "🧠 OB + FVG + Sentiment + Fear&Greed\n"
-    "⭐ Multi-TF Scoring | 🎯 1:2 RR zəmanəti\n\n"
-    "Əmrlər: /status /pause /resume /stats"
-)
+# Yalnız ilk dəfə göndərilən mesaj
+global bot_basladi
+if 'bot_basladi' not in globals():
+    bot_basladi = False
+
+if not bot_basladi:
+    telegram_mesaj_gonder(
+        "🚀 <b>UNIVERSAL SNIPER v7.2 işə düşdü!</b>\n\n"
+        "✅ Bütün bug-lar düzəldildi\n"
+        "📊 450+ aktiv | 3 strategiya\n"
+        "🧠 OB + FVG + Sentiment + Fear&Greed\n"
+        "⭐ Multi-TF Scoring | 🎯 1:2 RR zəmanəti\n\n"
+        "Əmrlər: /status /pause /resume /stats"
+    )
+    bot_basladi = True
 
 MINIMUM_FASILƏ = 300
 
