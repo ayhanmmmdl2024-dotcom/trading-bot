@@ -233,7 +233,7 @@ def telegram_komandlari_yoxla():
             elif text == '/resume':
                 BOT_AKTIV = True
                 telegram_mesaj_gonder("▶️ <b>Bot yenidən başladı.</b>")
-                       elif text == '/status':
+            elif text == '/status':
                 baku_time = datetime.now(timezone.utc) + timedelta(hours=4)
                 sessiya = "🟢 AKTİV" if aktiv_sessiyami() else "🌙 Sakit"
                 telegram_mesaj_gonder(
