@@ -730,15 +730,13 @@ def analiz_et(df, symbol=None, asset=None, asset_type="CRYPTO"):
                                 'rr': round(rr,2)
                             }
 
-      # ── TREND PULLBACK ──
+              # ── TREND PULLBACK ──
         if result is None and params["strategy"] in ("trend", "balanced"):
-            # Bu sətri əlavə et və ya dəyişdir:
-            if rejim in ('TRENDING', 'RANGING'):   # Ranging-də də icazə ver
-                ema50_dist = abs(price - ema50) / atr if atr > 0 else 10
+            ema50_dist = abs(price - ema50) / atr if atr > 0 else 10
 
-                if (trend_4h == 'LONG' and price > ema50 and ema50 > ema200
-                        and ema50_dist < 1.8 and rsi < 68 and guclu_hecm):
-                    # ... (qalan kod eyni qalsın)
+            # LONG
+            if (trend_4h == 'LONG' and price > ema50 and ema50 > ema200
+                    and ema50_dist < 1.8 and rsi < 68 and guclu_hecm):
                 sl = ema50 - atr * 2.0
                 tp = price + (price - sl) * RR_MINIMUM
                 if (price - sl) > 0:
@@ -747,6 +745,26 @@ def analiz_et(df, symbol=None, asset=None, asset_type="CRYPTO"):
                         skor   = multi_tf_skor('LONG', trend_4h, rejim, False, False, False, False, sentiment)
                         result = {
                             'type': "LONG 📈 (TREND)", 'entry': round(price,6),
+                            'tp': round(tp,6), 'sl': round(sl,6),
+                            'rsi': round(rsi,1), 'ema200': round(ema200,6),
+                            'ema50': round(ema50,6), 'pin': False, 'div': False,
+                            'ob': False, 'fvg': False, 'rejim': rejim,
+                            'atr_ratio': round(atr_ratio,2), 'ulduz': skor,
+                            'strategiya': 'TREND_PULLBACK', 'sentiment': sentiment,
+                            'rr': round(rr,2)
+                        }
+
+            # SHORT
+            elif (trend_4h == 'SHORT' and price < ema50 and ema50 < ema200
+                    and ema50_dist < 1.8 and rsi > 35 and guclu_hecm):
+                sl = ema50 + atr * 2.0
+                tp = price - (sl - price) * RR_MINIMUM
+                if (sl - price) > 0:
+                    rr = (price - tp) / (sl - price)
+                    if rr >= RR_MINIMUM:
+                        skor   = multi_tf_skor('SHORT', trend_4h, rejim, False, False, False, False, sentiment)
+                        result = {
+                            'type': "SHORT 📉 (TREND)", 'entry': round(price,6),
                             'tp': round(tp,6), 'sl': round(sl,6),
                             'rsi': round(rsi,1), 'ema200': round(ema200,6),
                             'ema50': round(ema50,6), 'pin': False, 'div': False,
