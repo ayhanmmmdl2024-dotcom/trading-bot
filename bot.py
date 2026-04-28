@@ -479,8 +479,11 @@ def xeberleri_yoxla():
 # SESSİYA (Baku vaxtı ilə düzəldilmiş)
 # ============================================================
 def aktiv_sessiyami():
-    """24/7 Aktiv rejim (test üçün)"""
-    return True   # Həmişə aktiv olsun
+    """24/7 AKTİV REJİM - Test üçün"""
+    utc_now = datetime.now(timezone.utc)
+    baku_now = utc_now + timedelta(hours=4)
+    print(f"🕒 DEBUG - Baku vaxtı: {baku_now.strftime('%H:%M:%S')} | Sessiya: AKTİV")
+    return True   # Həmişə aktiv
 # ============================================================
 # YFINANCE
 # ============================================================
