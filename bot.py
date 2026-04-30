@@ -1698,7 +1698,7 @@ def analiz_et(frames: dict, asset_type='crypto', symbol='', ref_idx=-2) -> Optio
         if rejim=='CRISIS': return None
         p=dinamik_params(rejim,asset_type)
 
-mtf_yon, mtf_skor = mtf_trend_yoxla(frames)
+    mtf_yon, mtf_skor = mtf_trend_yoxla(frames)
 
     # YUMŞALDILMIŞ VERSİYA
     if mtf_yon == 'NEYTRAL':
