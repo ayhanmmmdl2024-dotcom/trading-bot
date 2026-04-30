@@ -8273,7 +8273,8 @@ if __name__ == '__main__':
         })
         _tg_queue.put(None); _db_queue.put(None)
         telegram_gonder("🛑 Sniper v11 dayandırıldı (graceful shutdown).")
-        log.info("[SHUTDOWN] Tamamlandı.")LOG_FAYL        = "siqnal_log.csv"
+        log.info("[SHUTDOWN] Tamamlandı.")
+        LOG_FAYL = "siqnal_log.csv"
 # ✅ DÜZƏLİŞ 2: gunluk_zerer thread-safe idarə edilir
 gunluk_zerer    = 0.0
 gunluk_zerer_kl = threading.Lock()
