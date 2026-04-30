@@ -1703,7 +1703,7 @@ def analiz_et(frames: dict, asset_type='crypto', symbol='', ref_idx=-2) -> Optio
         # YUMŞALDILMIŞ VERSİYA
         if mtf_yon == 'NEYTRAL':
             mtf_yon = 'LONG' if rsi1h < 52 else 'SHORT'  # RSI-ya görə default yön
-           mtf_skor = 1
+            mtf_skor = 1
 
         yon = mtf_yon
         if yon=='LONG':
