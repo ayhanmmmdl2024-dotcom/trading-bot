@@ -1,6 +1,7 @@
-ccxt
-yfinance
-pandas
-pandas_ta
-requests
-python-dotenv
+ccxt>=4.2.0
+yfinance>=0.2.36
+pandas>=2.0.0
+pandas_ta>=0.3.14b
+requests>=2.31.0
+python-dotenv>=1.0.0
+scikit-learn>=1.4.0
