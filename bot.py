@@ -1698,14 +1698,14 @@ def analiz_et(frames: dict, asset_type='crypto', symbol='', ref_idx=-2) -> Optio
         if rejim=='CRISIS': return None
         p=dinamik_params(rejim,asset_type)
 
-    mtf_yon, mtf_skor = mtf_trend_yoxla(frames)
+        mtf_yon, mtf_skor = mtf_trend_yoxla(frames)
 
-    # YUMŞALDILMIŞ VERSİYA
-    if mtf_yon == 'NEYTRAL':
-        mtf_yon = 'LONG' if rsi1h < 52 else 'SHORT'  # RSI-ya görə default yön
-        mtf_skor = 1
+        # YUMŞALDILMIŞ VERSİYA
+        if mtf_yon == 'NEYTRAL':
+            mtf_yon = 'LONG' if rsi1h < 52 else 'SHORT'  # RSI-ya görə default yön
+           mtf_skor = 1
 
-    yon = mtf_yon
+        yon = mtf_yon
         if yon=='LONG':
             sweep =(l1<l20) and (price>l20)
             ema_ok=price>e200 and e50>e200
