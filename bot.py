@@ -1748,11 +1748,13 @@ def analiz_et(frames: dict, asset_type='crypto', symbol='', ref_idx=-2) -> Optio
         if sweep:   skor+=1.0
         elif pullback: skor+=0.7
         elif breakout: skor+=0.8
-        if yon=='LONG'  and rsi<35: skor+=1.5
-        elif yon=='LONG'  and rsi<42: skor+=0.8
-        elif yon=='SHORT' and rsi>65: skor+=1.5
-        elif yon=='SHORT' and rsi>58: skor+=0.8
-
+        if yon=='LONG'  and rsi<35: skor+=1.8
+        elif yon=='LONG'  and rsi<45: skor+=0.9
+        elif yon=='SHORT' and rsi>65: skor+=1.8
+        elif yon=='SHORT' and rsi>55: skor+=0.9
+            # RSI Trend Təsdiqi
+        if rsi > 50 and yon == 'LONG': skor += 0.3 # Momentum bizimlədir
+            
         ob_v,_,_=order_block_tap(df1h,yon)
         fvg_v,_,_=fvg_tap(df1h,yon)
         if ob_v:  skor+=1.0
