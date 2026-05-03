@@ -104,7 +104,7 @@ TOKEN            = _env("TOKEN",           required=True)
 CHAT_ID          = _env("CHAT_ID",         required=True)
 FINNHUB_API_KEY  = _env("FINNHUB_API_KEY", required=True)
 AUTO_TRADE       = _env("AUTO_TRADE", "False").lower() == "true"
-MIN_ULDUZ        = float(_env("MIN_ULDUZ", "3.0"))
+MIN_ULDUZ        = float(_env("MIN_ULDUZ", "2.3"))
 MAX_KORRELYASIYA = int(_env("MAX_KORRELYASIYA", "3"))
 MAX_GUNLUK_ZEFER = float(_env("MAX_GUNLUK_ZEFER", "3.0"))
 METRICS_PORT     = int(_env("METRICS_PORT", "9090"))
@@ -2705,15 +2705,15 @@ _candle_bp_queue = BackpressureQueue(maxsize=500, strategy='oldest', name='candl
 class OrderBookImbalance:
     """
     Binance order book-dan bid/ask həcm nisbətini ölçür.
-    OBI > 0.6  → alıcılar aqressiv → LONG siqnalına +bonus
-    OBI < 0.4  → satıcılar aqressiv → SHORT siqnalına +bonus
-    OBI 0.4–0.6 → balanslaşdırılmış → neytral
+    OBI > 0.53  → alıcılar aqressiv → LONG siqnalına +bonus
+    OBI < 0.47  → satıcılar aqressiv → SHORT siqnalına +bonus
+    OBI 0.47–0.53 → balanslaşdırılmış → neytral
 
     Formula: OBI = total_bid_qty / (total_bid_qty + total_ask_qty)
     """
     DEPTH_LIMIT  = 20      # top 20 bid/ask
     HISTORY_SIZE = 50
-    CACHE_TTL    = 15.0    # 15 saniyə cache
+    CACHE_TTL    = 5.0    # 15 saniyə cache
 
     def __init__(self):
         self._lock    = threading.Lock()
@@ -2784,7 +2784,7 @@ class CVDTracker:
       - Həcm ağırlıqlandırılır
       - Z-score ilə anomaliya aşkarı
     """
-    WINDOW = 20
+    WINDOW = 5
 
     def __init__(self):
         self._lock    = threading.Lock()
